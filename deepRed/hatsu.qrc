@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Hatsu">
+        <file>Resources/splash.png</file>
+        <file>Resources/icon32.ico</file>
+    </qresource>
+</RCC>
