@@ -5,15 +5,15 @@
 #include <memory>
 QString generateVideoSource(QString filename, preProcessType preprocessFuncIndex)
 {
-	const QString defaultSourceFunc = "clip = core.ffms2.Source(r'%1')";
-	const QString aviSourceFunc = "clip = core.avisource.AVISource(r'%1')";
+	const QString defaultSourceFunc = R"(clip = core.ffms2.Source(r"%1"))";
+	const QString aviSourceFunc = R"(clip = core.avisource.AVISource(r"%1"))";
 	QString  SourceFunc;
 	if (filename.endsWith(".avi"))
 		SourceFunc = aviSourceFunc.arg(filename);
 	else
 		SourceFunc = defaultSourceFunc.arg(filename);
-	const QString Gaussian = "clip = core.bilateral.Gaussian(clip,0.52)";
-	const QString Bilateral = "clip = core.bilateral.Bilateral(clip)";
+	const QString Gaussian = "clip = core.bilateral.Gaussian(clip,0.55)";
+	const QString Bilateral = "clip = core.bilateral.Bilateral(clip,sigmaS = 3,sigmaR = 0.028,planes = [0])";
 	const QString SurfaceBlur = "clip = core.surfaceblur.surfaceblur(clip)";
 	const QString BM3D = "import mvsfunc as mvf\n    clip = mvf.BM3D(clip)";
 	QString preprocessFunc;
@@ -77,9 +77,9 @@ void saveVpyScript(QString script,Hatsu* handle)
 
 auto generateEncoderParams(compressOptions* CO)
 {
-	const QString careTime = "--preset 8";
-	const QString NOTcareTime = "--preset 9 -r 16";
-	const QString careColor = "--aq-mode 3 --aq-strength 0.9";
+	const QString careTime = "--preset 8 -b 4 -I 120";
+	const QString NOTcareTime = "--preset 9 -r 16 -b 6 -I 400";
+	const QString careColor = "--aq-mode 3 --aq-strength 0.85";
 	const QString NOTcareColor = "";
 	const QString careMontion = "--qcomp 0.65";
 	const QString NOTcareMontion = "--qcomp 0.5";
@@ -136,7 +136,7 @@ void CompressLogic(compressOptions* CO, Hatsu* handle)
 		muxParams += "aac -b:a 190k ";
 	else
 		muxParams += "copy ";
-	muxParams += QString("%1.mp4").
+	muxParams += QString("\"%1.mp4\"").
 		arg(encoderParams.second.left(
 			encoderParams.second.length() - 6)
 		+"_MUX.mp4");
