@@ -21,6 +21,7 @@ public:
 	void QmsgCritical(QString a, QString b);
 	void QstartEncoder(QString x264encoderParams,
 		QString muxParams);
+	void compressButtonSetDisable(bool a);
 	~Hatsu();
 
 signals:

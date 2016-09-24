@@ -5,6 +5,7 @@
 
 encoderinfo::~encoderinfo()
 {
+	x264Encoder.kill();
 }
 
 int encoderinfo::muxIt(int exitCode, QProcess::ExitStatus exitStatus)

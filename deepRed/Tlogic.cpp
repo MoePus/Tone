@@ -118,6 +118,7 @@ void CompressLogic(compressOptions* CO, Hatsu* handle)
 	{
 		qDebug() << "Err NO file";
 		handle->QmsgCritical("Err", QString::fromLocal8Bit("未指定文件"));
+		delete CO;
 		return;
 	}
 

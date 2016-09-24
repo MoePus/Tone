@@ -7,7 +7,7 @@
 #include <QFileDialog>
 
 Hatsu::Hatsu(QWidget *parent)
-	: QMainWindow(parent)
+	: QMainWindow(parent),e(nullptr)
 {
 	ui.setupUi(this);
 	ui.ScriptEditor->document()->setPlainText(
@@ -117,6 +117,7 @@ int Hatsu::toCompress()
 	{
 		CO->audioFile = CO->videoFile;
 	}
+
 	std::thread th(CompressLogic, CO,this);
 	th.detach();
 	return 1;
@@ -159,6 +160,17 @@ void Hatsu::QstartEncoder(QString x264encoderParams,
 void Hatsu::startEncoderSlot(const QString & x264encoderParams,
 	const QString & muxParams)
 {
+	if (e)
+	{
+		delete e;
+		e = nullptr;
+	}
 	e = new encoderinfo(x264encoderParams, muxParams);
+		
 	e->show();
+}
+
+void Hatsu::compressButtonSetDisable(bool a)
+{
+	this->ui.commandCompress->setDisabled(a);
 }
